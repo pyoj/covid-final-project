@@ -41,4 +41,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function get_saved_countries()
+    {
+        return $this->belongsToMany(Country::class, 'saved_countries', 'user_id', 'country_id');
+    }
 }
