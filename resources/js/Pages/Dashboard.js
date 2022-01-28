@@ -53,22 +53,29 @@ export default function Dashboard(props) {
         fetch("/api/countries/saved")
             .then((response) => response.json())
             .then((json) => {
-                const countriesList = json.result.map((c) => c.code).join(",");
+                if (json.result.length) {
+                    const countriesList = json.result
+                        .map((c) => c.code)
+                        .join(",");
 
-                fetch(
-                    "https://disease.sh/v3/covid-19/countries/" + countriesList
-                )
-                    .then((response) => response.json())
-                    .then((json) => {
-                        if (
-                            Object.prototype.toString.call(json) ==
-                            "[object Object]"
-                        ) {
-                            setCountries([json]);
-                        } else {
-                            setCountries(json);
-                        }
-                    });
+                    fetch(
+                        "https://disease.sh/v3/covid-19/countries/" +
+                            countriesList
+                    )
+                        .then((response) => response.json())
+                        .then((json) => {
+                            if (
+                                Object.prototype.toString.call(json) ==
+                                "[object Object]"
+                            ) {
+                                setCountries([json]);
+                            } else {
+                                setCountries(json);
+                            }
+                        });
+                } else {
+                    setCountries([]);
+                }
             });
     };
 
